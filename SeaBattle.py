@@ -1,10 +1,9 @@
 import unicodedata
-import os
 from random import randint
 
 
-def playing_field(x, y):
-    tmp_list = [[unicodedata.lookup('BLACK SQUARE')]*x for i in range(y)]
+def playing_field(x):
+    tmp_list = [[unicodedata.lookup('BLACK SQUARE')]*x for i in range(x)]
     return tmp_list
 
 
@@ -13,21 +12,21 @@ def print_playing_fild(playing_list):
         print(' '.join(list(map(str, i))))
 
 
-def set_boat(x, y):
+def set_boat(x):
     botat_X_Y = []
-    if x & y == 1:
+    if x == 1:
         botat_X_Y = [0, 0]
     else:
-        botat_X_Y = [randint(0, x-1), randint(0, y-1)]
+        botat_X_Y = [randint(0, x-1), randint(0, x-1)]
     return botat_X_Y
 
 
 def shot(boat):
     user_shot = []
     user_x = int(input('Enter coordinate X: '))
-    user_shot.append(user_x)
+    user_shot.append(user_x-1)
     user_y = int(input('Enter coordinate Y: '))
-    user_shot.append(user_y)
+    user_shot.append(user_y-1)
     if boat == user_shot:
         print('You win')
     else:
@@ -36,14 +35,14 @@ def shot(boat):
 
 
 def update(playing_list, shot):
-    playing_list[shot[0]][shot[1]] == unicodedata.lookup('RADIOACTIVE SIGN')
+    playing_list[shot[0]][shot[1]] = unicodedata.lookup('RADIOACTIVE SIGN')
+    return playing_list
     
 
-user_x = int(input("Введите ширину поля: "))
-user_y = int(input("Введите высоту поля: "))
-playing_field_list = playing_field(user_x, user_y)
-boat = set_boat(user_x, user_y)
+user_x = int(input("Введите размер игровлго поля: "))
+playing_field_list = playing_field(user_x)
+boat = set_boat(user_x)
 print_playing_fild(playing_field_list)
 user_shot = shot(boat)
-update(playing_field_list, user_shot)
+playing_field_list = update(playing_field_list, user_shot)
 print_playing_fild(playing_field_list)
